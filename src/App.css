@@ -1,22 +1,98 @@
-.App {
-  text-align: center;
+html,
+body {
+  max-height: 100vh;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
+.container {
+  margin-left: 310px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.sidenav-trigger {
+  display: none;
 }
 
-.App-link {
-  color: #09d3ac;
+.sidenav {
+  max-height: 100vh;
+}
+
+.sidenav .header {
+  position: fixed;
+  top: 0;
+  z-index: 5;
+}
+
+.sidenav .notes {
+  position: absolute;
+  top: 11em;
+  max-height: calc(100% - 11em);
+  overflow: hidden;
+}
+
+.sidenav .notes:hover {
+  overflow-y: scroll;
+}
+
+.editor {
+  max-height: 99vh;
+  overflow: hidden;
+}
+
+.editor-container {
+  background: #fefcfc;
+  height: 95vh;
+}
+
+.editor-container form {
+  height: 100%;
+}
+
+.editor-container .actionBtns {
+  max-height: 50px;
+  height: 50px;
+  margin: 0;
+  padding: 0;
+}
+
+.editor-container .row.editor-row {
+  height: calc(100% - 50px);
+}
+
+.editor-container .main-editor {
+  width: 100%;
+  height: 100%;
+}
+
+.quill {
+  height: 100%;
+}
+
+.quill .ql-toolbar {
+  display: block;
+  background: #eaecec;
+}
+
+.ql-container {
+  height: 100%;
+}
+
+.ql-editor {
+  min-height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 3em;
+  background-color: #fefefe;
+}
+
+@media only screen and (max-width: 992px) {
+  .sidenav-trigger {
+    display: inline-block;
+  }
+
+  .editor {
+    width: 100%;
+  }
+
+  .container {
+    margin-left: auto;
+  }
 }
