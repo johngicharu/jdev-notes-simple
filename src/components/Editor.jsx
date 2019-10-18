@@ -14,15 +14,17 @@ const Editor = props => {
   return (
     <div className="editor">
       <header className="row">
-        <a
-          style={{ margin: "1em", color: "black" }}
-          href="!#"
-          data-target="slide-out"
-          data-action="notes"
-          className="right sidenav-trigger"
-        >
-          <i className="material-icons">menu</i>
-        </a>
+        <div className="right">
+          <a
+            style={{ margin: "1em", color: "black" }}
+            href="!#"
+            data-target="slide-out"
+            className="sidenav-trigger"
+          >
+            <span className="indigo-text">View Notes</span>
+            <i className="material-icons">list</i>
+          </a>
+        </div>
       </header>
       {selectedNote ? (
         <AddNote
@@ -35,17 +37,22 @@ const Editor = props => {
           updateNotes={updateNotes}
         />
       ) : (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh"
-          }}
-          className="valign-wrapper"
-        >
-          <h6>Select/Add note to start</h6>
-        </div>
+        <>
+          <div className="info_text small">
+            Click
+            <a
+              href="!#"
+              data-target="slide-out"
+              className="sidenav-trigger indigo-text"
+            >
+              View Notes
+            </a>
+            Above to Start
+          </div>
+          <div className="info_text large">
+            Let's Begin by Adding a Note Shall We?
+          </div>
+        </>
       )}
     </div>
   );

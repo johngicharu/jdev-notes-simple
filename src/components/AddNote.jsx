@@ -93,7 +93,7 @@ export class AddNote extends Component {
                 className="purple btn-floating"
                 onClick={e => this.onEdit(e, selectedNote._id)}
               >
-                <i className="material-icons">edit</i>
+                <i className="material-icons">mode_edit</i>
               </button>
               <button
                 style={{ marginRight: "2em" }}

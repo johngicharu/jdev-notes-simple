@@ -120,9 +120,10 @@ button.btn-floating:hover::before,
   height: calc(100% - 50px);
 }
 
-.actionBtns .right {
+.actionBtns .right,
+.actionBtns .left {
   padding: 0 !important;
-  margin-right: 2em;
+  margin: 0 2em;
 }
 
 .quill .ql-toolbar {
@@ -158,9 +159,33 @@ button.btn-floating:hover::before,
   height: 100%;
 }
 
+.info_text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 10em);
+}
+
+.info_text.small {
+  display: none;
+}
+
 @media only screen and (max-width: 1000px) {
   .sidenav-trigger {
     display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+  }
+
+  .sidenav-trigger span {
+    padding-top: 0.18em;
+  }
+
+  .sidenav-trigger i {
+    margin-left: 0.2em;
   }
 
   .editor-container {
@@ -179,5 +204,19 @@ button.btn-floating:hover::before,
   .container {
     width: 100% !important;
     margin: 0;
+  }
+
+  .info_text.large {
+    display: none;
+  }
+
+  .info_text.small {
+    display: flex;
+  }
+
+  .info_text a {
+    text-transform: uppercase;
+    font-size: 0.9em;
+    margin: 0 0.3em;
   }
 }
