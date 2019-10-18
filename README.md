@@ -1,4 +1,7 @@
 ## JDEV NOTES
+
+Live App: [jdev-notes-simple](https://jdev-notes-simple.netlify.com)
+
 This is a simple note taking app built using React, React Quill, and Materialize as the theme. The App currently uses Local Storage to store data but future updates will have it storing data on a server. 
 
 The app has basic actions such as create note, update notes and deleting notes. You also switch back and forth from editing notes which allows you to read through them without making changes.
