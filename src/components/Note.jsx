@@ -44,7 +44,7 @@ class Note extends React.Component {
             }}
             defaultValue={note.title}
             type="text"
-            className={note === selectedNote && "indigo lighten-2"}
+            required
             name="title"
             id="title"
             onChange={e => this.onUpdateTitle(e, note._id)}

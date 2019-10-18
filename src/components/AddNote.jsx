@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactQuill from "react-quill";
+import icon from "../icon.png";
 
 export class AddNote extends Component {
   state = {
@@ -7,6 +8,8 @@ export class AddNote extends Component {
     title: "",
     _id: ""
   };
+
+  // Lifecycle
 
   componentDidMount() {
     const { text, title, _id } = this.props.selectedNote;
@@ -20,9 +23,13 @@ export class AddNote extends Component {
     }
   }
 
+  // OnChange Event
+
   handleTextChange = value => {
     this.setState({ text: value });
   };
+
+  // Submit Note
 
   handleSubmit = e => {
     e.preventDefault();
@@ -40,15 +47,21 @@ export class AddNote extends Component {
     this.props.onCancel(true);
   };
 
+  // Cancel Editing
+
   handleCancel = e => {
     e.preventDefault();
     this.props.onCancel(true);
   };
 
+  // Change to edit mode
+
   onEdit = (e, id) => {
     e.preventDefault();
     this.props.onEdit(id);
   };
+
+  // Delete Note
 
   onDelete = (e, id) => {
     e.preventDefault();
@@ -62,11 +75,22 @@ export class AddNote extends Component {
       <div className="editor-container row">
         <form onSubmit={this.handleSubmit} className="col s12">
           <div className="row actionBtns">
-            <div style={{ marginBottom: "1em" }} className="right">
+            <div className="left">
+              <a
+                href="https://johngicharu.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-floating logo"
+                title="My Portfolio"
+              >
+                <img src={icon} alt="johngicharu.dev" />
+              </a>
+            </div>
+            <div className="right">
               <button
                 style={{ marginRight: "1em" }}
                 data-action="edit"
-                className="purple btn"
+                className="purple btn-floating"
                 onClick={e => this.onEdit(e, selectedNote._id)}
               >
                 <i className="material-icons">edit</i>
@@ -74,7 +98,7 @@ export class AddNote extends Component {
               <button
                 style={{ marginRight: "2em" }}
                 data-action="delete"
-                className="btn pink"
+                className="btn-floating pink"
                 onClick={e => this.onDelete(e, selectedNote._id)}
               >
                 <i className="material-icons">delete</i>
@@ -84,14 +108,16 @@ export class AddNote extends Component {
                   <button
                     style={{ marginRight: "1em" }}
                     type="submit"
-                    className="btn indigo waves-light waves-effect"
+                    data-action="save"
+                    className="btn-floating indigo waves-light waves-effect"
                   >
                     <i className="material-icons">check</i>
                   </button>
                   <button
                     type="button"
+                    data-action="cancel"
                     onClick={this.handleCancel}
-                    className="btn pink waves-light waves-effect"
+                    className="btn-floating pink waves-light waves-effect"
                   >
                     <i className="material-icons">cancel</i>
                   </button>
@@ -101,13 +127,11 @@ export class AddNote extends Component {
           </div>
 
           <div className="row editor-row">
-            <div className="main-editor">
-              <ReactQuill
-                readOnly={!editing}
-                value={this.state.text}
-                onChange={this.handleTextChange}
-              />
-            </div>
+            <ReactQuill
+              readOnly={!editing}
+              value={this.state.text}
+              onChange={this.handleTextChange}
+            />
           </div>
         </form>
       </div>

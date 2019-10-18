@@ -1,9 +1,11 @@
 import React from "react";
 import "./App.css";
-import AddNote from "./components/AddNote";
-import Notes from "./components/Notes";
 import uuid from "uuid";
 import M from "materialize-css";
+import "materialize-css/dist/css/materialize.min.css";
+import "materialize-css/dist/js/materialize.min";
+import Editor from "./components/Editor";
+import Sidenav from "./components/Sidenav";
 
 class App extends React.Component {
   state = {
@@ -13,6 +15,8 @@ class App extends React.Component {
     sort: "",
     addingNote: false
   };
+
+  // Lifecyle Methods
 
   componentDidMount() {
     if (window.localStorage.getItem("jdev_notes")) {
@@ -40,33 +44,7 @@ class App extends React.Component {
     window.localStorage.setItem("jdev_notes", JSON.stringify(this.state.notes));
   }
 
-  handleDelete = id => {
-    const notes = [...this.state.notes];
-    if (window.confirm("Are you sure? This cannot be undone")) {
-      this.setState({ notes: notes.filter(note => note._id !== id) });
-    }
-  };
-
-  updateNotes = selectedNote => {
-    const notes = [...this.state.notes];
-
-    notes.map(note => {
-      if (note._id === selectedNote._id) {
-        note.text = selectedNote.text;
-        return note;
-      }
-      return note;
-    });
-
-    this.setState({ notes, selectedNote, editing: false });
-  };
-
-  handleDeleteAll = e => {
-    e.preventDefault();
-    if (window.confirm("Are you sure? This cannot be undone")) {
-      this.setState({ notes: [] });
-    }
-  };
+  // Create Methods
 
   createNewNote = e => {
     e.preventDefault();
@@ -79,21 +57,48 @@ class App extends React.Component {
     this.setState({ selectedNote: note, notes, editing: true });
   };
 
-  handleSelectNote = id => {
-    let selectedNote;
-    this.state.notes.map(note => {
-      if (note._id === id) {
-        selectedNote = note;
+  // Note Update Methods
+
+  updateNotes = selectedNote => {
+    const notes = [...this.state.notes];
+
+    notes.map(note => {
+      if (note._id === selectedNote._id) {
+        if (selectedNote.title.trim() === "") {
+          return alert("Please add a title to your note");
+        }
+        if (selectedNote.text.trim() === "") {
+          if (window.confirm("Are you sure you want to save an empty note?")) {
+            note.text = selectedNote.text;
+          }
+        }
         return note;
       }
       return note;
     });
-    // const instance = M.Sidenav.getInstance(document.querySelector(".sidenav"));
-    // instance.close();
-    this.setState({
-      selectedNote
-    });
+
+    this.setState({ notes, selectedNote, editing: false });
   };
+
+  // Note Delete Methods
+
+  // Delete Single Note
+  handleDelete = id => {
+    const notes = [...this.state.notes];
+    if (window.confirm("Are you sure? This cannot be undone")) {
+      this.setState({ notes: notes.filter(note => note._id !== id) });
+    }
+  };
+
+  // Delete All Notes
+  handleDeleteAll = e => {
+    e.preventDefault();
+    if (window.confirm("Are you sure? This cannot be undone")) {
+      this.setState({ notes: [] });
+    }
+  };
+
+  // Updating Note
 
   handleEditing = id => {
     this.setState({
@@ -120,6 +125,27 @@ class App extends React.Component {
     this.setState({ notes });
   };
 
+  // Note Selection
+
+  handleSelectNote = id => {
+    let selectedNote;
+    this.state.notes.map(note => {
+      if (note._id === id) {
+        selectedNote = note;
+        return note;
+      }
+      return note;
+    });
+    // const instance = M.Sidenav.getInstance(document.querySelector(".sidenav"));
+    // instance.close();
+    this.setState({
+      selectedNote,
+      editing: false
+    });
+  };
+
+  // Sorting Notes
+
   sortNotes = e => {
     this.setState({ sort: e.target.value });
   };
@@ -129,80 +155,31 @@ class App extends React.Component {
 
     return (
       <div className="container">
-        <div className="row">
+        <div className="row main">
           <div className="col s12">
-            <ul id="slide-out" className="sidenav sidenav-fixed">
-              <div className="header col s12">
-                <h4>
-                  Notes
-                  {notes.length !== 0 && (
-                    <button
-                      onClick={this.handleDeleteAll}
-                      title="Delete All"
-                      className="btn-floating right red"
-                    >
-                      <i className="material-icons">delete</i>
-                    </button>
-                  )}
-                </h4>
-                <button
-                  onClick={this.createNewNote}
-                  style={{ width: "100%" }}
-                  className="btn indigo"
-                >
-                  Add Note
-                </button>
-                <div className="form-input">
-                  <input
-                    onChange={this.sortNotes}
-                    type="search"
-                    name="filter"
-                    id="filter"
-                    value={this.state.sort}
-                    placeholder="Search"
-                  />
-                </div>
-              </div>
+            <Sidenav
+              onDeleteAll={this.handleDeleteAll}
+              onCreateNewNote={this.createNewNote}
+              onSortNotes={this.sortNotes}
+              selectedNote={selectedNote}
+              onAction={this.onAction}
+              notes={this.state.notes}
+              editing={editing}
+              onUpdateTitle={this.handleUpdateTitle}
+              onSelect={this.handleSelectNote}
+              onDelete={this.handleDelete}
+              sort={sort}
+            />
 
-              <Notes
-                selectedNote={selectedNote}
-                onAction={this.onAction}
-                notes={this.state.notes}
-                editing={editing}
-                onUpdateTitle={this.handleUpdateTitle}
-                onSelect={this.handleSelectNote}
-                onDelete={this.handleDelete}
-                sort={sort}
-              />
-            </ul>
-
-            <div className="editor">
-              <header className="row">
-                <a
-                  style={{ margin: "1em", color: "black" }}
-                  href="!#"
-                  data-target="slide-out"
-                  className="right sidenav-trigger"
-                >
-                  <i className="material-icons">menu</i>
-                </a>
-              </header>
-              {selectedNote ? (
-                <AddNote
-                  editing={editing}
-                  onEdit={this.handleEditing}
-                  onCancel={this.handleCancel}
-                  selectedNote={selectedNote}
-                  onDelete={this.handleDelete}
-                  notes={notes}
-                  updateNotes={this.updateNotes}
-                />
-              ) : (
-                <div className="row">
-                  <h6>Select/Add note to start</h6>
-                </div>
-              )}
-            </div>
+            <Editor
+              editing={editing}
+              onEdit={this.handleEditing}
+              onCancel={this.handleCancel}
+              selectedNote={selectedNote}
+              onDelete={this.handleDelete}
+              notes={notes}
+              updateNotes={this.updateNotes}
+            />
           </div>
         </div>
       </div>
